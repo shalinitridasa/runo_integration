@@ -1,8 +1,8 @@
 app_name = "runo_integration"
-app_title = "Runo Integration"
-app_publisher = "manyam0258"
-app_description = "Runo Integration for Frappe"
-app_email = "manyam.surendhranath@gmail.com"
+app_title = "Runo"
+app_publisher = "Runo"
+app_description = "Runo"
+app_email = "runo@gmail.com"
 app_license = "mit"
 
 # Apps
@@ -15,20 +15,11 @@ app_license = "mit"
 # 	{
 # 		"name": "runo_integration",
 # 		"logo": "/assets/runo_integration/logo.png",
-# 		"title": "Runo Integration",
+# 		"title": "Runo",
 # 		"route": "/runo_integration",
-# 		"has_permission": "runo_integration.api.permission.has_app_permission",
+# 		"has_permission": "runo_integration.api.permission.has_app_permission"
 # 	}
 # ]
-
-# The dock, the rail down the left of the desk, is a document rather than a hook. Author it in
-# Manage Dock on a developer-mode site and press Export to App, and it is written to
-# `runo_integration/dock/runo_integration/runo_integration.json` for git to carry. An app that ships none has no
-# rail: its sidebar gets a switcher in the header instead.
-#
-# A companion app, one that extends a host app rather than standing on its own, says so with
-# `mount_on` on that same record, and its entries are appended to the host's rail. Mounting keeps
-# the companion off the apps screen, so it takes precedence over any add_to_apps_screen above.
 
 # Includes in <head>
 # ------------------
@@ -54,7 +45,6 @@ app_license = "mit"
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
-# doctype_kanban_js = {"doctype" : "public/js/doctype_kanban.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -79,9 +69,6 @@ app_license = "mit"
 
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]
-
-# automatically load and sync documents of this doctype from downstream apps
-# importable_doctypes = [doctype_1]
 
 # Jinja
 # ----------
@@ -120,23 +107,11 @@ app_license = "mit"
 # before_app_uninstall = "runo_integration.utils.before_app_uninstall"
 # after_app_uninstall = "runo_integration.utils.after_app_uninstall"
 
-# Build
-# ------------------
-# To hook into the build process
-
-# after_build = "runo_integration.build.after_build"
-
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
 # notification_config = "runo_integration.notifications.get_notification_config"
-
-# Awesome Bar
-# -----------
-# Extra search results: list of dicts with label, description, route, index.
-# route: ["List", "ToDo"], "/desk/docs/some/page", or "https://example.com"
-# awesomebar_search = ["runo_integration.search.awesomebar_results"]
 
 # Permissions
 # -----------
@@ -148,6 +123,14 @@ app_license = "mit"
 #
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# }
+
+# DocType Class
+# ---------------
+# Override standard doctype classes
+
+# override_doctype_class = {
+# 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
 
 # Document Events
@@ -165,7 +148,14 @@ app_license = "mit"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
+    "cron": {
+        "*/15 * * * *": ["runo_integration.api.sync_pending_ai_summaries"]
+    },
+    "daily": [
+        "runo_integration.api.sync_yesterday_calls"
+    ]
+}
 # 	"all": [
 # 		"runo_integration.tasks.all"
 # 	],
@@ -187,14 +177,6 @@ app_license = "mit"
 # -------
 
 # before_tests = "runo_integration.install.before_tests"
-
-# Extend DocType Class
-# ------------------------------
-#
-# Specify custom mixins to extend the standard doctype controller.
-# extend_doctype_class = {
-# 	"Task": "runo_integration.custom.task.CustomTaskMixin"
-# }
 
 # Overriding Methods
 # ------------------------------
